@@ -152,24 +152,24 @@ async def razorpay_webhook(
             )
             
     return {"status": "ok"}
-@dp.message(lambda message: message.text == "/test_alert")
-async def test_alert_command(message):
-    """Sends a dummy alert to verify Telegram formatting."""
+# @dp.message(lambda message: message.text == "/test_alert")
+# async def test_alert_command(message):
+#     """Sends a dummy alert to verify Telegram formatting."""
     
-    # Test Macro Alert
-    macro_text = format_macro_alert(
-        event_type="Inflation",
-        headline="US CPI Data Shows Unexpected Spike to 4.5%",
-        severity="High",
-        impact="Bearish for NIFTY IT, Bullish for NIFTY BANK"
-    )
-    await message.answer(macro_text)
+#     # Test Macro Alert
+#     macro_text = format_macro_alert(
+#         event_type="Inflation",
+#         headline="US CPI Data Shows Unexpected Spike to 4.5%",
+#         severity="High",
+#         impact="Bearish for NIFTY IT, Bullish for NIFTY BANK"
+#     )
+#     await message.answer(macro_text)
     
-    # Test Intraday Alert
-    intraday_text = format_intraday_alert(
-        sector="NIFTY IT",
-        direction="Below",
-        volume_multiplier=1.8,
-        expected_bias="Bearish"
-    )
-    await message.answer(intraday_text)
+#     # Test Intraday Alert
+#     intraday_text = format_intraday_alert(
+#         sector="NIFTY IT",
+#         direction="Below",
+#         volume_multiplier=1.8,
+#         expected_bias="Bearish"
+#     )
+#     await message.answer(intraday_text)
