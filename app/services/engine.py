@@ -68,13 +68,21 @@ async def run_alert_engine():
                 if signal.severity == "High":
                     # alert_text = format_macro_alert(signal.event_type, signal.headline, signal.severity, f"Bias: {signal.bias_direction}")
                     # Safely attempt to get the headline, fallback to the event type if missing
-                    safe_headline = getattr(signal, 'headline', getattr(signal, 'event_text', f"New {signal.event_type} Data Detected"))
+                    # --- Inside run_alert_engine() loop ---
+
+                    # 1. Safely extract variables
+                    safe_headline = getattr(signal, 'headline', getattr(signal, 'event_text', f"New {signal.event_type} Event Detected"))
                     
+                    # 2. Clean up Enums (convert 'SeverityEnum.High' -> 'High')
+                    clean_severity = str(signal.severity).split('.')[-1] if '.' in str(signal.severity) else str(signal.severity)
+                    clean_bias = str(signal.bias_direction).split('.')[-1] if '.' in str(signal.bias_direction) else str(signal.bias_direction)
+
+                    # 3. Format the alert text cleanly
                     alert_text = format_macro_alert(
                         event_type=signal.event_type, 
                         headline=safe_headline, 
-                        severity=signal.severity, 
-                        impact=f"Bias: {signal.bias_direction}"
+                        severity=clean_severity, 
+                        impact=f"Bias: {clean_bias}"
                     )
 
                 # Medium Severity = Needs Intraday Confirmation (Spec #6)
