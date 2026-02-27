@@ -66,7 +66,16 @@ async def run_alert_engine():
 
                 # High Severity = Immediate
                 if signal.severity == "High":
-                    alert_text = format_macro_alert(signal.event_type, signal.headline, signal.severity, f"Bias: {signal.bias_direction}")
+                    # alert_text = format_macro_alert(signal.event_type, signal.headline, signal.severity, f"Bias: {signal.bias_direction}")
+                    # Safely attempt to get the headline, fallback to the event type if missing
+                    safe_headline = getattr(signal, 'headline', getattr(signal, 'event_text', f"New {signal.event_type} Data Detected"))
+                    
+                    alert_text = format_macro_alert(
+                        event_type=signal.event_type, 
+                        headline=safe_headline, 
+                        severity=signal.severity, 
+                        impact=f"Bias: {signal.bias_direction}"
+                    )
 
                 # Medium Severity = Needs Intraday Confirmation (Spec #6)
                 elif signal.severity == "Medium" and not is_free:
